@@ -108,6 +108,35 @@ float3 normal(float2 uv)
 
 float4 PS(VS_OUTPUT input) : SV_Target
 {
+    float3 posLight = float3(1, 0, -1);
+    float3 nrml = input.vnorm.xyz;
+    float3 c = dot(nrml, -vLight);
+   
+    float3 pos = input.wpos.xyz;
+    float3 cameraPos = float3(0, 0, -1);
+    
+    float3 L = normalize(posLight - pos);
+    float3 V = normalize(cameraPos - pos);
+    float3 H = normalize(L + V);
+
+    float NL = saturate(dot(nrml, L));
+    float NH = saturate(dot(nrml, H));
+
+    float gloss = 60;
+    float k = 8;
+
+    float diffuse = NL;
+    float lightBlinnPhong = pow(NH, gloss) * k;
+    float ambient = 0;
+    float lighting = ambient + diffuse + specular;
+
+    float3 fragColor = baseColor * lighting;
+
+    return float4(fragColor, 1.0);
+    return float 4(c, 1);
+
+    
+
     float3 T = input.wnorm.xyz;
     float3 B = input.bnorm.xyz;
     float3 N = input.vnorm.xyz;
@@ -130,31 +159,31 @@ float4 PS(VS_OUTPUT input) : SV_Target
 
     float3 baseColor = color(brickUV);
 
-    float3 pos = input.wpos.xyz;
+ //   float3 pos = input.wpos.xyz;
     //float3 cameraPos = float3(3.5, 0, 0);
     //float3 cameraPos = view[1][3].xyz;
-    float3 cameraPos = float3(0,0,1);
+   // float3 cameraPos = float3(0,0,1);
 
 
-    float3 lightPos = -normalize(float3(0, 1, 0));
+  //  float3 lightPos = -normalize(float3(0, 1, 0));
 
-    float3 L = normalize(lightPos - pos);
+ /*   float3 L = normalize(lightPos - pos);
     float3 V = normalize(cameraPos - pos);
     float3 H = normalize(L + V);
+*/
+ //   float NL = saturate(dot(finalNormal, L));
+ //   float NH = saturate(dot(finalNormal, H));
 
-    float NL = saturate(dot(finalNormal, L));
-    float NH = saturate(dot(finalNormal, H));
+ //   float ambient = 0.;
+ //   float diffuse = NL;
+ //   float specular = pow(NH, 64.0) * 8.0;
 
-    float ambient = 0.;
-    float diffuse = NL;
-    float specular = pow(NH, 64.0) * 8.0;
-
-    float lighting = ambient + diffuse + specular;
+ //   float lighting = ambient + diffuse + specular;
 
     //baseColor = 1;
     // Итоговый цвет
-    float3 fragColor = baseColor * lighting;
+ //   float3 fragColor = baseColor * lighting;
 
-    return float4(fragColor, 1.0);
-    return float4(finalNormal / 2 + .5, 1.0);
+ //   return float4(fragColor, 1.0);
+ //   return float4(finalNormal / 2 + .5, 1.0);
 }

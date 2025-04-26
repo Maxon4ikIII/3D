@@ -911,7 +911,7 @@ namespace Camera
 	{
 		float t = timer::frameBeginTime*.001*0;
 		float angle = 100;
-		float a = 3.5;
+		float a = 1.5;
 		XMVECTOR Eye = XMVectorSet(sin(t)*a, 0, cos(t)*a, 0.0f);
 		XMVECTOR At = XMVectorSet(0, 0, 0, 0.0f);
 		XMVECTOR Up = XMVectorSet(0, 1, 0, 0.0f);
@@ -940,7 +940,7 @@ void mainLoop()
 	Rasterizer::Cull(Rasterizer::cullmode::off);
 	Shaders::vShader(0);
 	Shaders::pShader(0);
-	int grid = 128;
+	int grid = 16;
 	int count = grid * grid;
 	ConstBuf::ConstToVertex(4);
 	ConstBuf::ConstToPixel(4);

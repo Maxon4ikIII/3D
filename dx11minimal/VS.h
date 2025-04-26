@@ -84,10 +84,10 @@ float length(float3 c)
 float3 calcGeom(float2 a)
 {
     float R = 1.8;
-    float r = .37;
+    float r = .3;
 
-    int p = 3;
-    int q = 4;
+    int p = 7;
+    int q = 5;
 
     float3 pos = float3((R + cos(a.x * q)) * cos(a.x * p), -sin(a.x * q), (R + cos(a.x * q)) * sin(a.x * p));
 
@@ -103,9 +103,9 @@ float3 calcGeom(float2 a)
     pos += r * (cos(a.y) * N + sin(a.y) * B);
 
 
-    //pos = -pos.xzy;
+    pos = -pos.xzy;
 
-    pos = rotY(pos * 0.9, time.x * 0.01);
+    pos = rotY(pos * 0.9, time.x * 0.1);
 
     return pos;
 }
@@ -122,8 +122,18 @@ VS_OUTPUT VS(uint vID : SV_VertexID)
     float2 p = quad[vID % 6];
     int qID = vID / 6;
 
-    float x = (qID % (uint)gx + p.x * 0.5) / gx + 0.5;
-    float y = (qID / (uint)gy + p.y * 0.5) / gy + 0.5;
+    //float x = (qID % (uint)gx + p.x * 0.5) / gx + 0.5;
+    //float y = (qID / (uint)gy + p.y * 0.5) / gy + 0.5;
+
+    float x = (p.x*.5 + qID % (uint)(gx))/(gx)-.5;
+    float y = (p.y * .5 + qID / (uint)gx) / gy - .5;;
+
+    
+
+    float3 mPos = float3(cos(x*2*PI), y, sin(x*2*PI));
+
+    mPos.xz *= cos(PI*y)/2;
+    mPos.y = sin(PI * y)/2;
 
     float stepX = 1.0 / gx;
     float stepY = 1.0 / gy;
@@ -140,11 +150,14 @@ VS_OUTPUT VS(uint vID : SV_VertexID)
     float3 norm = normalize(cross(tangent, binormal));
 
 
-    output.pos = mul(mul(float4(pos, 1.0), view[0]), proj[0]);
+    output.pos = mul(mul(float4(mPos, 1.0), view[0]), proj[0]);
     float2 uv = float2(x, y);
     output.uv = uv * float2(52, 6);
     output.vnorm = float4(norm, 1.0);
     output.bnorm = float4(binormal, 1.0);
     output.wnorm = float4(tangent, 1.0);
+
+    output.vnorm = float4(normalize(mPos), 1.0);
+
     return output;
 }
