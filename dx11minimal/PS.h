@@ -22,9 +22,11 @@ cbuffer drawMat : register(b2)
     float hilight;
 };
 
-cbuffer params : register(b1)
+
+cbuffer objParams : register(b1)
 {
-    float r, g, b;
+    float gx;
+    float gy;
 };
 
 struct VS_OUTPUT
@@ -37,6 +39,9 @@ struct VS_OUTPUT
     float4 bnorm : NORMAL3;
     float2 uv : TEXCOORD0;
 };
+
+
+#define PI 3.1415926535897932384626433832795
 
 float nrand(float2 n)
 {
@@ -108,7 +113,7 @@ float3 normal(float2 uv)
 
 float4 PS(VS_OUTPUT input) : SV_Target
 {
-    float3 posLight = float3(1, 0, 0);
+    float3 posLight = float3(1, 1, 0);
     float3 nrml = input.vnorm.xyz;
    
     float3 pos = input.wpos.xyz;
@@ -121,15 +126,16 @@ float4 PS(VS_OUTPUT input) : SV_Target
     float NL = saturate(dot(nrml, L));
     float NH = saturate(dot(nrml, H));
 
-    float gloss = 106;
-    float k = 1;
+    float gloss = 60;
+    float k = 8;
 
     float diffuse = NL;
     float lightBlinnPhong = pow(NH, gloss) * k;
     float ambient = 0.1;
     float lighting = lightBlinnPhong;
 
-
+    //return 1;
+    lighting = sign(sin(input.uv.x*16*PI)/ sin(input.uv.y * 16 * PI));
     return float4(lighting, lighting, lighting, 1.0);
     
  //   float3 pos = input.wpos.xyz;

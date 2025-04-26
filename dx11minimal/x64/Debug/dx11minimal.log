@@ -1,1 +1,23 @@
-﻿  dx11minimal.vcxproj -> C:\Users\f0x\Source\Repos\3D\x64\Debug\dx11minimal.exe
+﻿  dx11minimal.cpp
+C:\Users\f0x\source\repos\3D\dx11minimal\dx11.h(852,84): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'dx11minimal.cpp')
+  
+C:\Users\f0x\source\repos\3D\dx11minimal\dx11.h(852,77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'dx11minimal.cpp')
+  
+C:\Users\f0x\source\repos\3D\dx11minimal\dx11.h(912,11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'dx11minimal.cpp')
+  
+C:\Users\f0x\source\repos\3D\dx11minimal\dx11.h(915,49): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'dx11minimal.cpp')
+  
+C:\Users\f0x\source\repos\3D\dx11minimal\dx11.h(915,36): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  (compiling source file 'dx11minimal.cpp')
+  
+C:\Users\f0x\source\repos\3D\dx11minimal\dx11.h(950,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'dx11minimal.cpp')
+  
+C:\Users\f0x\source\repos\3D\dx11minimal\dx11.h(951,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'dx11minimal.cpp')
+  
+  dx11minimal.vcxproj -> C:\Users\f0x\Source\Repos\3D\x64\Debug\dx11minimal.exe

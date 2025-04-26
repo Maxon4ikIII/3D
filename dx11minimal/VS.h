@@ -110,32 +110,37 @@ float3 calcGeom(float2 a)
     return pos;
 }
 
+float4 getGrid(uint vID, float sep, float2 dim)
+{
+    uint index = vID / 6;
+    float2 map[6] = { 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1 };
+    float2 uv = map[vID % 6];
+    float2 grid = (float2((index % uint(dim.x)), index / uint(dim.x)) + uv) / dim;
+    return float4(grid, uv);
+}
+
 VS_OUTPUT VS(uint vID : SV_VertexID)
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
 
-    float2 quad[6] = {
-        float2(-1, -1), float2(1, -1), float2(-1, 1),
-        float2(1, -1), float2(1, 1), float2(-1, 1)
-    };
-
-    float2 p = quad[vID % 6];
-    int qID = vID / 6;
-
-    //float x = (qID % (uint)gx + p.x * 0.5) / gx + 0.5;
-    //float y = (qID / (uint)gy + p.y * 0.5) / gy + 0.5;
-
-    float x = (p.x*.5 + qID % (uint)(gx))/(gx)-.5;
-    float y = (p.y * .5 + qID / (uint)gx) / gy - .5;;
-
+    float4 pp = getGrid(vID, 1, float2(gx, gy));
     
 
-    float3 mPos = float3(cos(x*2*PI), y, sin(x*2*PI));
+    float2 a = (pp.xy*2-1) * PI;
+   // a.x *= -1;
+    float3 mPos = float3(sin(a.x), sin(a.y /2), cos(a.x));
+    mPos.xz *= cos(a.y / 2);
 
-    mPos.xz *= cos(PI*y)/2;
-    mPos.y = sin(PI * y)/2;
+    //float3 mPos = float3(pp.xy-.5, 0);
+    //mPos.xz *= cos(a.y / 2);
 
-    float stepX = 1.0 / gx;
+    mPos *= .5;
+
+    mPos = rotY(mPos, time.x * .1);
+        
+    
+
+/*    float stepX = 1.0 / gx;
     float stepY = 1.0 / gy;
 
     float2 a = float2(x, y) * PI * 2.0;
@@ -149,13 +154,14 @@ VS_OUTPUT VS(uint vID : SV_VertexID)
     float3 tangent = normalize(pos1 - pos);
     float3 norm = normalize(cross(tangent, binormal));
 
+    */
+    output.pos = mul(float4(mPos, 1.0), mul(view[0], proj[0]));
+    //output.pos = float4(mPos, 1.0);
 
-    output.pos = mul(mul(float4(mPos, 1.0), view[0]), proj[0]);
-    float2 uv = float2(x, y);
-    output.uv = uv * float2(52, 6);
-    output.vnorm = float4(norm, 1.0);
-    output.bnorm = float4(binormal, 1.0);
-    output.wnorm = float4(tangent, 1.0);
+    output.uv = pp;
+    //output.vnorm = float4(norm, 1.0);
+    //output.bnorm = float4(binormal, 1.0);
+    //output.wnorm = float4(tangent, 1.0);
 
     output.vnorm = float4(normalize(mPos), 1.0);
 
