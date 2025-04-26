@@ -155,7 +155,7 @@ VS_OUTPUT VS(uint vID : SV_VertexID)
     float3 norm = normalize(cross(tangent, binormal));
 
     */
-    output.pos = mul(float4(mPos, 1.0), mul(view[0], proj[0]));
+    output.pos = mul(float4(mPos, 1.0), mul(view[0], proj[0])); 
     //output.pos = float4(mPos, 1.0);
 
     output.uv = pp;
