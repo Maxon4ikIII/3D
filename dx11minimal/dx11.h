@@ -937,7 +937,7 @@ void mainLoop()
 	Draw::Clear({ 0,0,0,0 });
 	Draw::ClearDepth();
 	Depth::Depth(Depth::depthmode::on);
-	Rasterizer::Cull(Rasterizer::cullmode::off);
+	Rasterizer::Cull(Rasterizer::cullmode::back);
 	Shaders::vShader(0);
 	Shaders::pShader(0);
 	int grid = 16;

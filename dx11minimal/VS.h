@@ -127,7 +127,7 @@ VS_OUTPUT VS(uint vID : SV_VertexID)
     
 
     float2 a = (pp.xy*2-1) * PI;
-   // a.x *= -1;
+    a.x *= -1;
     float3 mPos = float3(sin(a.x), sin(a.y /2), cos(a.x));
     mPos.xz *= cos(a.y / 2);
 
